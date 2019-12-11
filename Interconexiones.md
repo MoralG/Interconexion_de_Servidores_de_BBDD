@@ -6,27 +6,27 @@
 
 #### Los servidores enlazados siempre tendrán que estar instalados en máquinas diferentes.
 
-### 1. Servidor ORACLE enlazado a Servidor ORACLE
+### 1. Enlace entre Servidor ORACLE y Servidor ORACLE
 -----------------------------------------------------------------
 #### Realizar un enlace entre dos servidores de bases de datos ORACLE, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
   
 
 
-### 2. Servidor POSTGRES enlazado a Servidor POSTGRES
+### 2. Enlace entre Servidor POSTGRES y Servidor POSTGRES
 ------------------------------------------------------------------
 
 #### Realizar un enlace entre dos servidores de bases de datos Postgres, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
 
 
 
-### 3. Servidor ORACLE enlazado a Servidor POSTGRES
+### 3. Enlace entre Servidor ORACLE y Servidor POSTGRES
 ------------------------------------------------------------------
 
 #### Realizar un enlace entre un servidor ORACLE y otro Postgres, empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
 
 
 
-### 4. Servidor ORACLE enlazado a Servidor MySQL
+### 4. Enlace entre Servidor ORACLE y Servidor MySQL
 ------------------------------------------------------------------
 
 #### Realizar un enlace entre un servidor ORACLE y otro MySQL, empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
