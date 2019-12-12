@@ -8,16 +8,16 @@
 
 #### Se pide:
 
-### 1. Servidor ORACLE enlazado a Servidor ORACLE 
-* Realizar un enlace entre dos servidores de bases de datos ORACLE, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.(![...leer mas](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#1-servidor-oracle-enlazado-a-servidor-oracle))
+### 1.  [Enlace entre Servidor ORACLE y Servidor ORACLE](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#1-enlace-entre-servidor-oracle-y-servidor-oracle)
+* Realizar un enlace entre dos servidores de bases de datos ORACLE, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
 
-### 2. Servidor POSTGRES enlazado a Servidor POSTGRES
-* Realizar un enlace entre dos servidores de bases de datos Postgres, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.(![...leer mas](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#2-servidor-postgres-enlazado-a-servidor-postgres))
+### 2. [Enlace entre Servidor POSTGRES y Servidor POSTGRES](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#2-enlace-entre-servidor-postgres-y-servidor-postgres)
+* Realizar un enlace entre dos servidores de bases de datos Postgres, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
 
-### 3. Servidor ORACLE enlazado a Servidor POSTGRES
-* Realizar un enlace entre un servidor ORACLE y otro Postgres, empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.(![...leer mas](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#3-servidor-oracle-enlazado-a-servidor-postgres))
+### 3. [Enlace entre Servidor ORACLE y Servidor POSTGRES](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#3-enlace-entre-servidor-oracle-y-servidor-postgres)
+* Realizar un enlace entre un servidor ORACLE y otro Postgres, empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
 
-### 4. Servidor ORACLE enlazado a Servidor MySQL
-* Realizar un enlace entre un servidor ORACLE y otro MySQL, empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.(![...leer mas](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#4-servidor-oracle-enlazado-a-servidor-mysql))
+### 4. [Enlace entre Servidor ORACLE y Servidor MySQL](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#4-enlace-entre-servidor-oracle-y-servidor-mysql)
+* Realizar un enlace entre un servidor ORACLE y otro MySQL, empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
       
 #### Los servidores enlazados siempre tendrán que estar instalados en máquinas diferentes.
