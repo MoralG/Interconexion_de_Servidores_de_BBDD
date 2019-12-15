@@ -462,7 +462,7 @@ USING 'PSQLU';
 SELECT * FROM aspectos@ConexionPalomaPSQLU;
 ~~~
 
-### 3.1 Enlace de Cliente Postgres a Servidor Oracle
+### 3.2 Enlace de Cliente Postgres a Servidor Oracle
 -----------------------------------------------------------------
 
 ### 4. Enlace ORACLE - MySQL
