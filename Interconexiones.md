@@ -105,18 +105,18 @@ El servicio "orcl" tiene 1 instancia(s).
 
 ###### Ya solo queda crear un enlace en nuestro Servidor Oracle para que pueda enlazarse al Servidor Oracle 2. Para crear el link se realiza de la siguiente forma:
 
-~~~
+``` sql
 CREATE DATABASE LINK ConexionPaloma
 CONNECT TO paloma
 IDENTIFIED BY paloma
 USING 'orcl';
-~~~
+```
 
 > * Indicamos el nombre del link 'ConexionPaloma' para que se conecte al usuario 'paloma', con la contraseña 'paloma' usando el nombre del servicio 'orcl'
 
 ###### Comprobamos el enlace, realizando un select a una de la tablas de paloma:
 
-~~~
+``` sql
 SELECT * FROM aspectos@ConexionPaloma;
 
     COD DESCRIPCION 				       IMPORTAN
@@ -131,7 +131,7 @@ SELECT * FROM aspectos@ConexionPaloma;
     ORI Originalidad				       media
 
     8 filas seleccionadas.
-~~~
+```
 
 > * La consulta nos muestra todos los campos de la tabla 'aspectos' al hacer la conexión por el enlace 'ConexionPaloma'
 
@@ -181,16 +181,16 @@ sudo systemctl restart postgresql.service
 
 ###### Para crear el enlace vamos a utilizar el módulo 'dblink'
 
-~~~
+``` sql
 CREATE EXTENSION dblink;
     CREATE EXTENSION
-~~~
+```
 
 > * Solo los usuarios con superusuarios pueden crear extensiones. Este privilegio se asigna de con 'ALTER ROLE <name_role> WITH superuser;'
 
 ###### Ahora podemos realizar una consulta a una base de datos del Servidor de Postgres con lo siguiente:
 
-~~~
+``` sql
 SELECT * FROM dblink('dbname=restaurante host=192.168.43.66 user=paloma password=paloma', 'select * from aspectos') as aspectos (codigo varchar, descripcion varchar, importancia varchar);
 
      codigo | descripcion  | importancia
@@ -203,7 +203,7 @@ SELECT * FROM dblink('dbname=restaurante host=192.168.43.66 user=paloma password
      TEC    | Tecnica      | Media
      ORI    | Originalidad | media
     (7 rows)
-~~~
+```
 
 > * dblink: Tenemos que indicarle, para realizar el enlace, varios parámetros:
 > >
@@ -219,15 +219,15 @@ SELECT * FROM dblink('dbname=restaurante host=192.168.43.66 user=paloma password
 
 ###### Podemos utilizar dblink_connect y le indicamos los parámetros del servidor para realizar una conexión persistente con el servidor y no tener que indicar mas, durante la sesión, dichos parámetros.
 
-~~~
+``` sql
 SELECT dblink_connect('ConexionPaloma', 'dbname=restaurante host=192.168.43.66 user=paloma password=paloma');
-~~~
+```
 
 > * ConexionPaloma: Nombre que se le asigna a la conexión persistente.
 
 ###### Ahora realizamos una consulta con lo indicado anteriormente:
 
-~~~
+``` sql
 SELECT * FROM dblink('ConexionPaloma', 'select * from aspectos') as aspectos (codigo varchar, descripcion varchar, importancia varchar);
 
      codigo | descripcion  | importancia
@@ -240,7 +240,7 @@ SELECT * FROM dblink('ConexionPaloma', 'select * from aspectos') as aspectos (co
      TEC    | Tecnica      | Media
      ORI    | Originalidad | media
     (7 rows)
-~~~
+```
 
 ## 3. Enlace ORACLE - POSTGRES
 
@@ -447,20 +447,20 @@ El servicio "PSQLU" tiene 1 instancia(s).
 
 ###### Ahora solo nos queda crear el enlace con 'CREATE LINK' y realizar la consulta.
 
-~~~
+``` sql
 CREATE PUBLIC DATABASE LINK ConexionPalomaPSQLU
 CONNECT TO paloma
 IDENTIFIED BY paloma
 USING 'PSQLU';
-~~~
+```
 
 > * Indicamos el nombre del link 'ConexionPalomaPSQLU' para que se conecte al usuario 'paloma', con la contraseña 'paloma' usando el nombre del servicio 'PSQLU'
 
 ###### Comprobamos el enlace, realizando un select a una de la tablas de paloma:
 
-~~~
+``` sql
 SELECT * FROM aspectos@ConexionPalomaPSQLU;
-~~~
+```
 
 ### 3.2 Enlace de Cliente Postgres a Servidor Oracle
 -----------------------------------------------------------------
