@@ -493,19 +493,8 @@ SQL> SELECT * FROM "aspectos"@ConexionPalomaPSQLU;
 
   7 filas seleccionadas.
 ~~~
-=======
-``` sql
-SELECT * FROM aspectos@ConexionPalomaPSQLU;
-```
->>>>>>> 92f9968ad2152a6354030fba21f8731fd94000f9
 
 ### 3.2 Enlace de Cliente Postgres a Servidor Oracle
 -----------------------------------------------------------------
 
-<<<<<<< HEAD
-=======
-### 4. Enlace ORACLE - MySQL
-------------------------------------------------------------------
 
-#### Realizar un enlace entre un servidor ORACLE y otro MySQL, empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
->>>>>>> 92f9968ad2152a6354030fba21f8731fd94000f9
