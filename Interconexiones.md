@@ -470,9 +470,8 @@ USING 'PSQLU';
 
 > * Indicamos el nombre del link 'ConexionPalomaPSQLU' para que se conecte al usuario 'paloma', con la contraseña 'paloma' usando el nombre del servicio 'PSQLU'
 
-###### Comprobamos el enlace, realizando un select a una de la tablas de paloma:
+###### Comprobamos el enlace, realizando un ```select``` a una de la tablas de paloma:
 
-<<<<<<< HEAD
 ~~~
 SQL> Col codigo format a20;
 SQL> Col descripcion format a20;
@@ -497,4 +496,144 @@ SQL> SELECT * FROM "aspectos"@ConexionPalomaPSQLU;
 ### 3.2 Enlace de Cliente Postgres a Servidor Oracle
 -----------------------------------------------------------------
 
+~~~
+git clone https://github.com/laurenz/oracle_fdw.git
 
+wget https://download.oracle.com/otn_software/linux/instantclient/195000/oracle-instantclient19.5-basic-19.5.0.0.0-1.x86_64.rpm
+
+wget https://download.oracle.com/otn_software/linux/instantclient/195000/oracle-instantclient19.5-sqlplus-19.5.0.0.0-1.x86_64.rpm
+
+wget https://download.oracle.com/otn_software/linux/instantclient/195000/oracle-instantclient19.5-tools-19.5.0.0.0-1.x86_64.rpm
+
+wget https://download.oracle.com/otn_software/linux/instantclient/195000/oracle-instantclient19.5-devel-19.5.0.0.0-1.x86_64.rpm
+~~~
+
+~~~
+sudo apt install alien
+~~~
+
+~~~
+sudo alien -d oracle-instantclient19.5-basic-19.5.0.0.0-1.x86_64.rpm
+sudo alien -d oracle-instantclient19.5-sqlplus-19.5.0.0.0-1.x86_64.rpm
+sudo alien -d oracle-instantclient19.5-tools-19.5.0.0.0-1.x86_64.rpm
+sudo alien -d oracle-instantclient19.5-devel-19.5.0.0.0-1.x86_64.rpm
+~~~
+
+~~~
+sudo dpkg -i oracle-instantclient19.5-basic_19.5.0.0.0-2_amd64.deb
+sudo dpkg -i oracle-instantclient19.5-sqlplus-19.5.0.0.0-1.x86_64.rpm
+sudo dpkg -i oracle-instantclient19.5-tools-19.5.0.0.0-1.x86_64.rpm
+sudo dpkg -i oracle-instantclient19.5-devel-19.5.0.0.0-1.x86_64.rpm
+~~~
+
+~~~
+vagrant@Postgres:~/oracle_fdw$ make
+Makefile:20: /usr/lib/postgresql/11/lib/pgxs/src/makefiles/pgxs.mk: No such file or directory
+make: *** No rule to make target '/usr/lib/postgresql/11/lib/pgxs/src/makefiles/pgxs.mk'.  Stop.
+~~~
+
+~~~
+vagrant@Postgres:~/oracle_fdw$ sudo apt install postgresql-server-dev-all
+~~~
+
+~~~
+oracle_utils.c:22:10: fatal error: oci.h: No such file or directory
+ #include <oci.h>
+          ^~~~~~~
+compilation terminated.
+make: *** [<builtin>: oracle_utils.o] Error 1
+~~~
+
+~~~
+export ORACLE_HOME="/usr/lib/oracle/19.5/client64"
+export LD_LIBRARY_PATH="/usr/lib/oracle/19.5/client64/lib"
+export PATH=$ORACLE_HOME:$PATH
+export USE_PGXS=1
+~~~
+
+###### Tenemos que modificar el Makefile:
+
+
+###### Tenemos que añadir ```-I/usr/include/oracle/19.5/client64``` en la variable PG_CPPFLAGS y tenemos que añadir ```-L/usr/lib/oracle/19.5/client64/lib``` en la variable SHLIB_LINK
+
+###### MakeFile corregido para la versión 19.5
+~~~
+MODULE_big = oracle_fdw
+OBJS = oracle_fdw.o oracle_utils.o oracle_gis.o
+EXTENSION = oracle_fdw
+DATA = oracle_fdw--1.1.sql oracle_fdw--1.0--1.1.sql
+DOCS = README.oracle_fdw
+REGRESS = oracle_fdw oracle_gis oracle_import oracle_join
+
+# add include and library paths for both Instant Client and regular Client
+PG_CPPFLAGS = -I$(ORACLE_HOME)/sdk/include -I$(ORACLE_HOME)/oci/include -I$(ORACLE_HOME)/rdbms/public -I/usr/include/oracle/19.5/client64
+
+SHLIB_LINK = -L$(ORACLE_HOME) -L$(ORACLE_HOME)/bin -L$(ORACLE_HOME)/lib -L$(ORACLE_HOME)/lib/amd64 -l$(ORACLE_SHLIB) -L/usr/lib/oracle/19.5/client64/lib
+
+ifdef NO_PGXS
+subdir = contrib/oracle_fdw
+top_builddir = ../..
+include $(top_builddir)/src/Makefile.global
+include $(top_srcdir)/contrib/contrib-global.mk
+else
+PG_CONFIG = pg_config
+PGXS := $(shell $(PG_CONFIG) --pgxs)
+include $(PGXS)
+endif
+
+# Oracle's shared library is oci.dll on Windows and libclntsh elsewhere
+ifeq ($(PORTNAME),win32)
+ORACLE_SHLIB=oci
+else
+ifeq ($(PORTNAME),cygwin)
+ORACLE_SHLIB=oci
+else
+ORACLE_SHLIB=clntsh
+endif
+endif
+~~~
+
+~~~
+sudo make install
+~~~
+
+
+~~~
+postgres@Postgres:/home/vagrant/oracle_fdw$ psql
+psql (11.5 (Debian 11.5-1+deb10u1))
+Type "help" for help.
+
+postgres=# create extension oracle_fdw;
+ERROR:  could not load library "/usr/lib/postgresql/11/lib/oracle_fdw.so": libaio.so.1: cannot open shared object file: No such file or directory
+~~~
+
+~~~
+sudo apt-get install libaio1 libaio-dev
+~~~
+
+~~~
+postgres@Postgres:/home/vagrant/oracle_fdw$ psql
+psql (11.5 (Debian 11.5-1+deb10u1))
+Type "help" for help.
+
+postgres=# create extension oracle_fdw;
+CREATE EXTENSION
+~~~
+
+###### CREATE SERVER define un nuevo servidor externo. El usuario que define el servidor se convierte en su propietario.
+
+##### Desde ```postgres=# ```
+~~~
+create server oracle foreign data wrapper oracle_fdw options (dbserver '//192.168.43.58/PROD.local');
+  CREATE SERVER
+~~~
+
+~~~
+create user mapping for postgres server oracle options (user 'paloma', password 'paloma');
+  CREATE USER MAPPING
+~~~
+
+~~~
+create foreign table ASPECTOS ( codigo varchar, descripcion varchar, importancia varchar) server oracle options (schema 'paloma', table 'ASPECTOS');
+  CREATE FOREIGN TABLE
+~~~
