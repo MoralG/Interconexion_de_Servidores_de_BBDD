@@ -23,8 +23,5 @@
 #### 3.2 [Enlace de Cliente Postgres a Servidor Oracle](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#32-enlace-de-cliente-postgres-a-servidor-oracle)
 
 * Realizar un enlace entre un Servidor ORACLE y un Cliente Postgres, empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
-
-### 4. [Enlace ORACLE - MySQL](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#4-enlace-entre-servidor-oracle-y-servidor-mysql)
-* Realizar un enlace entre un servidor ORACLE y otro MySQL, empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
       
 #### Los servidores enlazados siempre tendrán que estar instalados en máquinas diferentes.

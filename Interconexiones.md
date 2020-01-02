@@ -83,11 +83,11 @@ OraclePaloma =
  )
 ~~~
 
-> * ADDRESS: Especificamos el protocolo, la dirección y el puerto de la máquina que queremos conectarnos.
+> * **ADDRESS**: Especificamos el protocolo, la dirección y el puerto de la máquina que queremos conectarnos.
 >
-> * SERVER = DEDICATED: Para crear un proceso del servidor para atender solo a la conexión indicada
+> * **SERVER = DEDICATED**: Para crear un proceso del servidor para atender solo a la conexión indicada
 >
-> * SERVICE_NAME: Especificamos el nombre del sevicio de la máquina que queremos conectarnos. Este se especifica en el parámetro CONNECT_DATA.
+> * **SERVICE_NAME**: Especificamos el nombre del sevicio de la máquina que queremos conectarnos. Este se especifica en el parámetro CONNECT_DATA.
 
 ###### Ahora tenemos que reiniciar el servicio para que se apliquen los cambios:
 
@@ -205,15 +205,15 @@ SELECT * FROM dblink('dbname=restaurante host=192.168.43.66 user=paloma password
     (7 rows)
 ~~~
 
-> * dblink: Tenemos que indicarle, para realizar el enlace, varios parámetros:
-> >
-> > * dbname: Nombre de la base de datos del servidor.
-> >
-> > * host: Direción del servidor.
-> >
-> > * user: Usuario con el cual nos queremos conectar al servidor.
-> >
-> > * select .....: Indicar una consulta.
+>* **dblink**: Tenemos que indicarle, para realizar el enlace, varios parámetros:
+>
+>  **dbname**: Nombre de la base de datos del servidor.
+>
+>  **host**: Direción del servidor.
+>
+>  **user**: Usuario con el cual nos queremos conectar al servidor.
+>
+>  **select .....**: Indicar una consulta.
 
 > * Además tenemos que indicar el tipo da datos de las columnas, ya que es obligatorio.
 
@@ -336,17 +336,17 @@ TraceFile = /tmp/sql.log
 Driver = /usr/lib/x86_64-linux-gnu/odbc/liboplodbcS.so
 ~~~
 
-> * Driver: Indicamos el driver, 'PostgreSQL ANSI' y 'PostgreSQL Unicode', que hemos añadido al fichero '/etc/odbcinst.ini'.
+> * **Driver**: Indicamos el driver, 'PostgreSQL ANSI' y 'PostgreSQL Unicode', que hemos añadido al fichero '/etc/odbcinst.ini'.
 >
-> * Servername: Dirección del Servidor de Postgres.
+> * **Servername**: Dirección del Servidor de Postgres.
 >
-> * Username: Nombre del usuario que vamos a utilixar para realizar la conexión al servidor.
+> * **Username**: Nombre del usuario que vamos a utilixar para realizar la conexión al servidor.
 >
-> * Password: Contraseña del usuario 'paloma'.
+> * **Password**: Contraseña del usuario 'paloma'.
 >
-> * Port: Puerto del Servidor de Postgres.
+> * **Port**: Puerto del Servidor de Postgres.
 >
-> * Database: Base de datos a la que vamos a conectarnos.
+> * **Database**: Base de datos a la que vamos a conectarnos.
 
 ###### Podemos comprobar la configuración de los drivers y la configuración de la conexión de dichos drivers:
 
@@ -365,15 +365,29 @@ odbcinst -q -s
 ###### Comprobamos una conexión al Servidor de Postgres:
 
 ~~~
-isql -v PSQLU
-    +---------------------------------------+
-    | Connected!                            |
-    |                                       |
-    | sql-statement                         |
-    | help [tablename]                      |
-    | quit                                  |
-    |                                       |
-    +---------------------------------------+
+root@servidororacle:/home/oracle# isql -v PSQLU
++---------------------------------------+
+| Connected!                            |
+|                                       |
+| sql-statement                         |
+| help [tablename]                      |
+| quit                                  |
+|                                       |
++---------------------------------------+
+SQL> select * from aspectos;
++-------+---------------------------------------------------+------------+
+| codigo| descripcion                                       | importancia|
++-------+---------------------------------------------------+------------+
+| COL   | Color                                             | Baja       |
+| TEX   | Textura                                           | Alta       |
+| VOL   | Volumen                                           | Media      |
+| CAN   | Cantidad                                          | Alta       |
+| PRE   | Presentacion                                      | Alta       |
+| TEC   | Tecnica                                           | Media      |
+| ORI   | Originalidad                                      | media      |
++-------+---------------------------------------------------+------------+
+SQLRowCount returns 7
+7 rows fetched
 ~~~
 
 ###### Ahora vamos a configurar el servicio de 'Heterogeneus Services', para esto vamos a crear el fichero '/opt/oracle/product/12.2.0.1/dbhome_1/hs/admin/initPSQLU.ora' y añadimos lo siguiente:
@@ -386,15 +400,15 @@ HS_LANGUAGE = AMERICAN_AMERICA.WE8ISO8859P1
 set ODBCINI=/etc/odbc.ini
 ~~~
 
-> HS_FDS_CONNECT_INFO: Para indicar un nombre al servicio.
+> **HS_FDS_CONNECT_INFO**: Para indicar un nombre al servicio.
 >
-> HS_FDS_TRACE_LEVEL: Para activar el servicio.
+> ***HS_FDS_TRACE_LEVEL***: Para activar el servicio.
 >
-> HS_FDS_SHAREABLE_NAME: Donde especificamos la dirección del driver configurado anteriormente
+> **HS_FDS_SHAREABLE_NAME**: Donde especificamos la dirección del driver configurado anteriormente
 >
-> HS_LANGUAGE: Indicamos el idioma por defecto
+> **HS_LANGUAGE**: Indicamos el idioma por defecto
 >
-> set ODBCINI: Donde especificamos el fichero de configuración del driver para PSQL.
+> **set ODBCINI**: Donde especificamos el fichero de configuración del driver para PSQL.
 
 ###### Configuramos el fichero '/opt/oracle/product/12.2.0.1/dbhome_1/network/admin/listener.ora' para que pueda escuchar en el driver de ODBC, añadiendo otra entrada al apartado de 'SID_DESC':
 
@@ -414,9 +428,9 @@ SID_LIST_LISTENER =
  )
 ~~~
 
-> SID_NAME: Le especificamos el nombre del servicio de 'Heterogeneus Services'.
+> **SID_NAME**: Le especificamos el nombre del servicio de 'Heterogeneus Services'.
 >
-> PROGRAM: Le indicamos el programa por defecto.
+> **PROGRAM**: Le indicamos el programa por defecto.
 
 ###### Reiniciamos el servicio:
 
@@ -449,8 +463,8 @@ El servicio "PSQLU" tiene 1 instancia(s).
 
 ~~~
 CREATE PUBLIC DATABASE LINK ConexionPalomaPSQLU
-CONNECT TO paloma
-IDENTIFIED BY paloma
+CONNECT TO "paloma"
+IDENTIFIED BY "paloma"
 USING 'PSQLU';
 ~~~
 
@@ -459,13 +473,26 @@ USING 'PSQLU';
 ###### Comprobamos el enlace, realizando un select a una de la tablas de paloma:
 
 ~~~
-SELECT * FROM aspectos@ConexionPalomaPSQLU;
+SQL> Col codigo format a20;
+SQL> Col descripcion format a20;
+SQL> Col importancia format a20;
+~~~
+~~~
+SQL> SELECT * FROM "aspectos"@ConexionPalomaPSQLU;
+
+  codigo		           descripcion	        importancia
+  -------------------- -------------------- --------------------
+  COL		               Color		          Baja
+  TEX		               Textura		          Alta
+  VOL		               Volumen		          Media
+  CAN		               Cantidad		          Alta
+  PRE		               Presentacion	        Alta
+  TEC		               Tecnica		          Media
+  ORI		               Originalidad	        media
+
+  7 filas seleccionadas.
 ~~~
 
 ### 3.2 Enlace de Cliente Postgres a Servidor Oracle
 -----------------------------------------------------------------
 
-### 4. Enlace ORACLE - MySQL
-------------------------------------------------------------------
-
-#### Realizar un enlace entre un servidor ORACLE y otro MySQL, empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
