@@ -251,7 +251,7 @@ SELECT * FROM dblink('ConexionPaloma', 'select * from aspectos') as aspectos (co
 
 #### Tenemos que configurar un enlace utilizando el driver `ODBC` (Open DataBase Connector) que es un estandar para el acceso a los datos de cualquier gestor de base de datos.
 
-##### Configuramos el Servidor Postgres
+##### Configuración el Servidor Postgres
 
 ###### Modificamos el fichero `/etc/postgresql/11/main/postgresql.conf`, descomentando una línea y añadiendo la dirección del cliente que quiere crear el enlace para que pueda escucharlo.
 
@@ -500,6 +500,8 @@ SELECT * FROM "aspectos"@ConexionPalomaPSQLU;
 -----------------------------------------------------------------
 
 #### Para realizar el enlace de Postgres a Oracle necesitamos el cliente de Oracle y descargamos la extensión para postgres `oracle_fdw`.
+
+##### Configuración el Cliente Postgres
 
 ###### Descargamos el cliente de oracle con `wget` desde la página oficial de oracle.
 
