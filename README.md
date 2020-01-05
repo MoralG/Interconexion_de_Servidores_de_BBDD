@@ -8,13 +8,13 @@
 
 #### Se pide:
 
-### 1.  [Enlace ORACLE - ORACLE](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#1-enlace-entre-servidor-oracle-y-servidor-oracle)
+### 1.  [Enlace ORACLE - ORACLE](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#1-enlace-oracle---oracle)
 * Realizar un enlace entre dos servidores de bases de datos ORACLE, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
 
-### 2. [Enlace POSTGRES - POSTGRES](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#2-enlace-entre-servidor-postgres-y-servidor-postgres)
+### 2. [Enlace POSTGRES - POSTGRES](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#2-enlace-postgres---postgres)
 * Realizar un enlace entre dos servidores de bases de datos Postgres, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
 
-### 3. [Enlace ORACLE - POSTGRES](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#3-enlace-entre-servidor-oracle-y-servidor-postgres)
+### 3. [Enlace ORACLE - POSTGRES](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#3-enlace-oracle---postgres)
 
 #### 3.1 [Enlace de Cliente Oracle a Servidor Postgres](https://github.com/MoralG/Interconexion_de_Servidores_de_BBDD/blob/master/Interconexiones.md#31-enlace-de-cliente-oracle-a-servidor-postgres)
 
