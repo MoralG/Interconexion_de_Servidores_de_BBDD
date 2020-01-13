@@ -103,6 +103,12 @@ El servicio "orcl" tiene 1 instancia(s).
   La instancia "orcl", con estado UNKNOWN, tiene 1 manejador(es) para este servicio...
 ~~~
 
+###### Asignamos privilegios al usuario `moralg` de nuestra base de datos, para que pueda crear el enlace.
+
+```sql
+GRANT CREATE DATABASE LINK to moralg;
+```
+
 ###### Ya solo queda crear un enlace en nuestro Servidor Oracle para que pueda enlazarse al Servidor Oracle 2. Para crear el link se realiza de la siguiente forma:
 
 ``` sql
@@ -114,26 +120,11 @@ USING 'orcl';
 
 > * Indicamos el nombre del link `ConexionPaloma` para que se conecte al usuario `paloma`, con la contraseña `paloma` usando el nombre del servicio `orcl`
 
-###### Comprobamos el enlace, realizando un `SELECT` a una de la tablas de paloma:
+###### Comprobamos el enlace, realizando un `SELECT` a una de la tablas de paloma y combinandola con una de moralg:
 
-``` sql
-SELECT * FROM ASPECTOS@ConexionPaloma;
+![PruebaOra_Ora](image/PruebaOra_Ora.png)
 
-    COD DESCRIPCION 				       IMPORTAN
-    --- ---------------------------------- --------
-    SAB Sabor.					           Muy alta
-    COL Color					           Baja
-    TEX Textura					           Alta
-    VOL Volumen					           Media
-    CAN Cantidad					       Alta
-    PRE Presentacion				       Alta
-    TEC Tecnica					           Media
-    ORI Originalidad				       media
-
-    8 filas seleccionadas.
-```
-
-> * La consulta nos muestra todos los campos de la tabla `ASPECTOS` al hacer la conexión por el enlace `ConexionPaloma`.
+> * La consulta nos muestra el campo `DESCRPCION` de la tabla `ASPECTOS` al hacer la conexión por el enlace `ConexionPaloma` combinando con el campo `NOMBREEQUIPOS` de la tabla `PALMARES`.
 
 ## 2. Enlace POSTGRES - POSTGRES
 
@@ -190,20 +181,7 @@ CREATE EXTENSION dblink;
 
 ###### Ahora podemos realizar una consulta a una base de datos del Servidor de Postgres con lo siguiente:
 
-``` sql
-SELECT * FROM dblink('dbname=restaurante host=192.168.43.66 user=paloma password=paloma', 'select * from aspectos') as aspectos (codigo varchar, descripcion varchar, importancia varchar);
-
-     codigo | descripcion  | importancia
-    --------+--------------+-------------
-     COL    | Color        | Baja
-     TEX    | Textura      | Alta
-     VOL    | Volumen      | Media
-     CAN    | Cantidad     | Alta
-     PRE    | Presentacion | Alta
-     TEC    | Tecnica      | Media
-     ORI    | Originalidad | media
-    (7 rows)
-```
+![PruebaPost_Post](image/PruebaPost_Post.png)
 
 > `dblink`: Tenemos que indicarle, para realizar el enlace, varios parámetros:
 >
@@ -220,31 +198,18 @@ SELECT * FROM dblink('dbname=restaurante host=192.168.43.66 user=paloma password
 ###### Podemos utilizar `dblink_connect` y le indicamos los parámetros del servidor para realizar una conexión persistente con el servidor y no tener que indicar más, durante la sesión, dichos parámetros.
 
 ``` sql
-SELECT dblink_connect('ConexionPaloma', 'dbname=restaurante host=192.168.43.66 user=paloma password=paloma');
+SELECT dblink_connect('ConexionPaloma', 'dbname=restaurante host=172.22.3.28 user=paloma password=paloma');
 ```
 
 > `ConexionPaloma`: Nombre que se le asigna a la conexión persistente.
 
 ###### Ahora realizamos una consulta con lo indicado anteriormente:
 
-``` sql
-SELECT * FROM dblink('ConexionPaloma', 'select * from aspectos') as aspectos (codigo varchar, descripcion varchar, importancia varchar);
-
-     codigo | descripcion  | importancia
-    --------+--------------+-------------
-     COL    | Color        | Baja
-     TEX    | Textura      | Alta
-     VOL    | Volumen      | Media
-     CAN    | Cantidad     | Alta
-     PRE    | Presentacion | Alta
-     TEC    | Tecnica      | Media
-     ORI    | Originalidad | media
-    (7 rows)
-```
+![PruebaPost_Post](image/PruebaPost_Post1.png)
 
 ## 3. Enlace ORACLE - POSTGRES
 
-#### Realizar un enlace entre un servidor ORACLE y otro Postgres, empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
+#### Realizar un enlace entre un cliente ORACLE y un servidor Postgres, empleando Heterogeneus Services, explicando la configuración necesaria en ambos extremos y demostrando su funcionamiento.
 
 ### 3.1 Enlace de Cliente Oracle a Servidor Postgres
 -----------------------------------------------------------------
@@ -459,6 +424,12 @@ El servicio "PSQLU" tiene 1 instancia(s).
   La instancia "PSQLU", con estado UNKNOWN, tiene 1 manejador(es) para este servicio...
 ~~~
 
+###### Asignamos privilegios al usuario `moralg` de nuestra base de datos, para que pueda crear el enlace.
+
+```sql
+GRANT CREATE PUBLIC DATABASE LINK to moralg;
+```
+
 ###### Ahora solo nos queda crear el enlace con `CREATE LINK` y realizar la consulta.
 
 ``` sql
@@ -473,28 +444,13 @@ USING 'PSQLU';
 ###### Comprobamos el enlace, realizando un `SELECT` a una de la tablas de paloma:
 
 ``` sql
-col codigo format a20;
-col descripcion format a20;
-col importancia format a20;
+col nombreequipo format a30;
+col descripcion format a30;
 ```
 
 > * Para que salga las columnas mas pequeñas y estéticas, utilizamos `col <nombre_campo> format a<tamaño>`.
 
-``` sql
-SELECT * FROM "aspectos"@ConexionPalomaPSQLU;
-
-  codigo		           descripcion	        importancia
-  -------------------- -------------------- --------------------
-  COL		               Color		          Baja
-  TEX		               Textura		          Alta
-  VOL		               Volumen		          Media
-  CAN		               Cantidad		          Alta
-  PRE		               Presentacion	        Alta
-  TEC		               Tecnica		          Media
-  ORI		               Originalidad	        media
-
-  7 filas seleccionadas.
-```
+![PruebaOra_Post](image/PruebaOra_Post.png)
 
 ### 3.2 Enlace de Cliente Postgres a Servidor Oracle
 -----------------------------------------------------------------
@@ -660,7 +616,7 @@ CREATE EXTENSION oracle_fdw;
 ###### Creamos un nuevo servidor con la opciones del servidor de Oracle.
 
 ``` sql
-CREATE SERVER ConexionOraclePaloma1 FOREIGN DATA WRAPPER oracle_fdw OPTIONS(dbserver '//192.168.43.58:1521/ORCL');
+CREATE SERVER ConexionOraclePaloma FOREIGN DATA WRAPPER oracle_fdw OPTIONS(dbserver '//192.168.43.58:1521/ORCL');
 ```
 
 > `CREATE SERVER`: define un nuevo servidor externo. El usuario que define el servidor se convierte en su propietario.
@@ -668,7 +624,7 @@ CREATE SERVER ConexionOraclePaloma1 FOREIGN DATA WRAPPER oracle_fdw OPTIONS(dbse
 ###### Le asignamos el usuario `paloma` con la contraseña `paloma`.
 
 ``` sql
-CREATE USER MAPPING for postgres SERVER ConexionOraclePaloma1 OPTIONS(user 'paloma', 
+CREATE USER MAPPING for postgres SERVER ConexionOraclePaloma OPTIONS(user 'paloma', 
                                                                       password 'paloma');
 ```
 
@@ -682,7 +638,7 @@ CREATE USER MAPPING for postgres SERVER ConexionOraclePaloma1 OPTIONS(user 'palo
 CREATE FOREIGN TABLE ASPECTOS(codigo varchar(10), 
                               descripcion varchar(30), 
                               importancia varchar(10)) 
-SERVER ConexionOraclePaloma1 OPTIONS(schema 'PALOMA', 
+SERVER ConexionOraclePaloma OPTIONS(schema 'PALOMA', 
                                      table 'ASPECTOS');
 ```
 
@@ -690,19 +646,6 @@ SERVER ConexionOraclePaloma1 OPTIONS(schema 'PALOMA',
 
 ###### Ahora realizamos la consulta:
 
-``` sql
-SELECT * FROM ASPECTOS;                                                                   
- codigo | descripcion  | importancia 
---------+--------------+-------------
- SAB    | Sabor.       | Muy alta
- COL    | Color        | Baja
- TEX    | Textura      | Alta
- VOL    | Volumen      | Media
- CAN    | Cantidad     | Alta
- PRE    | Presentacion | Alta
- TEC    | Tecnica      | Media
- ORI    | Originalidad | media
-(8 rows)
-```
+![PruebaPost_Ora](image/PruebaPost_Ora.png)
 
 > * Si queremos dar permisos a un usuario concreto de Postgres para que pueda realizar consultas a un servidor externo concreto utilizaremos `GRANT USAGE ON FOREIGN SERVER <nombre_servidor> TO <nombre_usuario>;`.
